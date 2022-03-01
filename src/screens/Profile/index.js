@@ -46,7 +46,8 @@ const Profile = ({navigation}) => {
       .then(res => {
         // console.log(res.data);
         dispatch(logoutAction());
-        navigation.navigate('Login');
+        setShow(false);
+        navigation.navigate('Home');
       })
       .catch(err => {
         console.log(err);
@@ -59,106 +60,142 @@ const Profile = ({navigation}) => {
   }, []);
 
   return (
-    <NativeBaseProvider>
-      <View style={styles.container}>
-        {isLoading ? (
-          <>
-            <View style={styles.headerWrapper}>
-              <Image
-                source={profilePic}
-                style={styles.imgUser}
-                onError={() => {
-                  setProfilePic(avatar);
-                }}
-              />
-              <Text style={styles.name}>{userData.name}</Text>
-            </View>
-            <TouchableOpacity style={styles.wrapper}>
-              <Text style={styles.text}>Your favourites</Text>
-              <Image
-                source={require('../../assets/icons/angle-right.png')}
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.wrapper}>
-              <Text style={styles.text}>FAQ</Text>
-              <Image
-                source={require('../../assets/icons/angle-right.png')}
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.wrapper}>
-              <Text style={styles.text}>Help</Text>
-              <Image
-                source={require('../../assets/icons/angle-right.png')}
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.wrapper}
-              onPress={() => {
-                navigation.navigate('UpdateProfile');
+    <>
+      {user.token !== null ? (
+        <NativeBaseProvider>
+          <View style={styles.container}>
+            {isLoading ? (
+              <>
+                <View style={styles.headerWrapper}>
+                  <Image
+                    source={profilePic}
+                    style={styles.imgUser}
+                    onError={() => {
+                      setProfilePic(avatar);
+                    }}
+                  />
+                  <Text style={{...styles.name}}>{userData.name}</Text>
+                </View>
+                <TouchableOpacity style={styles.wrapper}>
+                  <Text style={styles.text}>Your favourites</Text>
+                  <Image
+                    source={require('../../assets/icons/angle-right.png')}
+                    style={styles.arrow}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.wrapper}>
+                  <Text style={styles.text}>FAQ</Text>
+                  <Image
+                    source={require('../../assets/icons/angle-right.png')}
+                    style={styles.arrow}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.wrapper}>
+                  <Text style={styles.text}>Help</Text>
+                  <Image
+                    source={require('../../assets/icons/angle-right.png')}
+                    style={styles.arrow}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.wrapper}
+                  onPress={() => {
+                    navigation.navigate('UpdateProfile');
+                  }}>
+                  <Text style={styles.text}>Update profile</Text>
+                  <Image
+                    source={require('../../assets/icons/angle-right.png')}
+                    style={styles.arrow}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.wrapper}>
+                  <Text style={styles.text}>Update password</Text>
+                  <Image
+                    source={require('../../assets/icons/angle-right.png')}
+                    style={styles.arrow}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.btnLogout}
+                  onPress={() => setShow(true)}>
+                  <Text style={styles.logout}>Log out</Text>
+                  <Image
+                    source={require('../../assets/icons/arrow.png')}
+                    style={styles.arrowIcon}
+                  />
+                </TouchableOpacity>
+              </>
+            ) : (
+              <View style={styles.loader}>
+                <ActivityIndicator size="large" color="#ffcd61" />
+              </View>
+            )}
+
+            <Modal
+              isOpen={show}
+              onClose={() => setShow(false)}
+              _backdrop={{
+                _dark: {
+                  bg: 'coolGray.800',
+                },
+                bg: 'warmGray.50',
               }}>
-              <Text style={styles.text}>Update profile</Text>
-              <Image
-                source={require('../../assets/icons/angle-right.png')}
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.wrapper}>
-              <Text style={styles.text}>Update password</Text>
-              <Image
-                source={require('../../assets/icons/angle-right.png')}
-                style={styles.arrow}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.btnLogout}
-              onPress={() => setShow(true)}>
-              <Text style={styles.logout}>Log out</Text>
-              <Image
-                source={require('../../assets/icons/arrow.png')}
-                style={styles.arrowIcon}
-              />
-            </TouchableOpacity>
-          </>
-        ) : (
-          <View style={styles.loader}>
-            <ActivityIndicator size="large" color="#ffcd61" />
+              <Modal.Content maxWidth="350" maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>LOGOUT</Modal.Header>
+                <Modal.Body>Are you sure you want to logout?</Modal.Body>
+                <Modal.Footer>
+                  <Button.Group space={5}>
+                    <Button
+                      // variant="ghost"
+                      colorScheme="blueGray"
+                      onPress={() => setShow(false)}>
+                      No
+                    </Button>
+                    <Button
+                      colorScheme="yellow"
+                      onPress={(() => setShow(false), onLogout)}>
+                      Yes
+                    </Button>
+                  </Button.Group>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal>
           </View>
-        )}
-
-        <Modal
-          isOpen={show}
-          onClose={() => setShow(false)}
-          _backdrop={{
-            _dark: {
-              bg: 'coolGray.800',
-            },
-            bg: 'warmGray.50',
-          }}>
-          <Modal.Content maxWidth="350" maxH="212">
-            <Modal.CloseButton />
-            <Modal.Header>LOGOUT</Modal.Header>
-            <Modal.Body>Are you sure you want to logout?</Modal.Body>
-            <Modal.Footer>
-              <Button.Group space={5}>
-                <Button
-                  // variant="ghost"
-                  colorScheme="blueGray"
-                  onPress={() => setShow(false)}>
-                  No
-                </Button>
-                <Button colorScheme="yellow" onPress={onLogout}>
-                  Yes
-                </Button>
-              </Button.Group>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </View>
-    </NativeBaseProvider>
+        </NativeBaseProvider>
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image
+                source={require('../../assets/icons/left-arrow.png')}
+                style={styles.backIcon}
+              />
+            </TouchableOpacity>
+            <Text style={styles.name}>Back</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.wrapper}
+            onPress={() => navigation.push('Login')}>
+            <Text style={styles.text}>Login</Text>
+            <Image
+              source={require('../../assets/icons/angle-right.png')}
+              style={styles.arrow}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.wrapper}
+            onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.text}>Sign Up</Text>
+            <Image
+              source={require('../../assets/icons/angle-right.png')}
+              style={styles.arrow}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
   );
 };
 

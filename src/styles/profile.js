@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#393939',
     fontSize: 22,
+    fontFamily: 'Redressed-Regular',
   },
   wrapper: {
     flexDirection: 'row',
@@ -71,6 +72,75 @@ const styles = StyleSheet.create({
     width: 30,
     height: 20,
     marginRight: 15,
+  },
+  backIcon: {
+    resizeMode: 'contain',
+    width: 30,
+    height: 22,
+    marginTop: 5,
+  },
+  header: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingVertical: 13,
+    paddingHorizontal: 15,
+    width: width,
+    borderBottom: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f5f5f5',
+  },
+  // update profile
+  btnWrapper: {
+    flex: 1,
+    marginLeft: '2%',
+  },
+  profilePic: {
+    width: 120,
+    height: 120,
+    resizeMode: 'cover',
+    borderRadius: 120 / 2,
+  },
+  btnPicture: {
+    marginVertical: 5,
+    width: 180,
+    paddingVertical: 13,
+    borderRadius: 12,
+  },
+  inputImg: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  inputStyle: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#e5e5e5',
+    marginBottom: 15,
+    marginTop: -5,
+  },
+  btnSave: {
+    paddingVertical: 18,
+    borderRadius: 12,
+    backgroundColor: '#ffcd61',
+    marginHorizontal: '5%',
+    marginBottom: 20,
+    marginTop: -5,
+  },
+  save: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#393939',
+  },
+  selectDate: {
+    height: 45,
+    borderBottomWidth: 2,
+    borderBottomColor: '#e5e5e5',
+    marginBottom: 15,
+  },
+  date: {
+    paddingVertical: 10,
+    paddingLeft: 5,
+    color: 'black',
   },
 });
 

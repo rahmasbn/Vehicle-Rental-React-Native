@@ -30,7 +30,7 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     if (auth.isFulfilled === true) {
-      navigation.navigate('Content');
+      navigation.navigate('Home');
     }
   }, [auth, navigation]);
 

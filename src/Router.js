@@ -17,6 +17,10 @@ import Detail from './screens/VehicleDetail';
 import Category from './screens/VehicleType';
 import Popular from './screens/VehicleType/Popular';
 import UpdateProfile from './screens/Profile/UpdateProfile';
+import FirstStep from './screens/Payment';
+import SecondStep from './screens/Payment/Second';
+import ThirdStep from './screens/Payment/Third';
+import DetailHistory from './screens/History/Detail';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,7 +35,13 @@ const Screens = () => (
       tabBarPressColor: '#ffcd61',
     }}>
     <Top.Screen name="Chat" component={Chat} />
-    <Top.Screen name="History Order" component={History} />
+    <Top.Screen
+      options={{
+        title: 'History Order',
+      }}
+      name="History"
+      component={History}
+    />
   </Top.Navigator>
 );
 
@@ -144,17 +154,8 @@ const HeaderDetail = () => {
   );
 };
 
-// const Left = ({onPress}) => (
-//   <TouchableHighlight onPress={onPress}>
-//     <Image
-//       source={require('./assets/icons/back.png')}
-//       style={{marginHorizontal: 15, marginTop: 15}}
-//     />
-//   </TouchableHighlight>
-// );
-
 const Router = () => (
-  <Stack.Navigator>
+  <Stack.Navigator initialRouteName="Content">
     <Stack.Screen
       name="Login"
       component={Login}
@@ -206,6 +207,32 @@ const Router = () => (
       options={{
         title: 'Update Profile',
       }}
+    />
+    <Stack.Screen
+      name="FirstStep"
+      component={FirstStep}
+      options={{
+        title: 'Payment',
+      }}
+    />
+    <Stack.Screen
+      name="SecondStep"
+      component={SecondStep}
+      options={{
+        title: 'Payment',
+      }}
+    />
+    <Stack.Screen
+      name="ThirdStep"
+      component={ThirdStep}
+      options={{
+        title: 'Payment',
+      }}
+    />
+    <Stack.Screen
+      name="DetailHistory"
+      component={DetailHistory}
+      options={{headerShown: false}}
     />
   </Stack.Navigator>
 );
