@@ -108,7 +108,11 @@ const Profile = ({navigation}) => {
                     style={styles.arrow}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.wrapper}>
+                <TouchableOpacity
+                  style={styles.wrapper}
+                  onPress={() => {
+                    navigation.navigate('UpdatePass');
+                  }}>
                   <Text style={styles.text}>Update password</Text>
                   <Image
                     source={require('../../assets/icons/angle-right.png')}
@@ -133,13 +137,14 @@ const Profile = ({navigation}) => {
             )}
 
             <Modal
+              // style={{backgroundColor: 'black', opacity: 0.7}}
               isOpen={show}
               onClose={() => setShow(false)}
               _backdrop={{
                 _dark: {
                   bg: 'coolGray.800',
                 },
-                bg: 'warmGray.50',
+                bg: 'warmGray.800',
               }}>
               <Modal.Content maxWidth="350" maxH="212">
                 <Modal.CloseButton />

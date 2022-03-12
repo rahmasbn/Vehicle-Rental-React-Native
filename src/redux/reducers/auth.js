@@ -30,7 +30,7 @@ const authReducer = (prevState = initialState, action) => {
         role: data.result.roles,
         id: data.result.id,
       };
-      console.log('userdata', userData);
+      // console.log('userdata', userData);
       return {
         ...prevState,
         isPending: false,
@@ -38,7 +38,7 @@ const authReducer = (prevState = initialState, action) => {
         userData,
       };
 
-    case 'AUTH_LOGIN_REJECT':
+    case 'AUTH_LOGIN_REJECTED':
       const err = action.payload;
       return {
         ...prevState,

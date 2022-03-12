@@ -34,3 +34,8 @@ export const getDetailVehicle = id => {
   const URL = `${process.env.HOST}/vehicles/detail/${id}`;
   return axios.get(URL);
 };
+
+export const getAllVehicles = search => {
+  const URL = `${process.env.HOST}/vehicles?page=1&limit=4&name=${search}`;
+  return axios.get(URL);
+};

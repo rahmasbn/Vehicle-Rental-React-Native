@@ -7,6 +7,20 @@ import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/redux/store';
+import Toast from 'react-native-toast-message';
+
+// const toastConfig = {
+//   success: props => {
+//     <BaseToast
+//       {...props}
+//       style={{backgroundColor: 'pink'}}
+//       text1Style={{
+//         fontSize: 15,
+//         fontWeight: '400',
+//       }}
+//     />;
+//   },
+// };
 
 const AppWithNavAndRedux = () => (
   <Provider store={store}>
@@ -14,6 +28,7 @@ const AppWithNavAndRedux = () => (
       <NavigationContainer>
         <Router />
       </NavigationContainer>
+      <Toast />
     </PersistGate>
   </Provider>
 );

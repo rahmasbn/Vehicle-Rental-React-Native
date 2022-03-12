@@ -14,7 +14,7 @@ const bookingCode = Math.random()
   .slice(0, 8);
 
 const ThirdStep = ({navigation, route}) => {
-  //   console.log(route.params);
+  // console.log('third param', route.params);
   const user = useSelector(state => state.auth.userData);
   //   console.log('state', user);
 
@@ -31,11 +31,11 @@ const ThirdStep = ({navigation, route}) => {
     // console.log('body', body);
     createTransaction(body, token)
       .then(res => {
-        // console.log(res.data.result.result);
         const param = {
           ...route.params,
           transactionId: res.data.result.result.id,
         };
+        console.log('third id', param);
         navigation.navigate('DetailHistory', param);
       })
       .catch(err => {
@@ -44,10 +44,9 @@ const ThirdStep = ({navigation, route}) => {
   };
 
   let someDate = new Date(route.params.date);
-  const moment = require('moment');
   // eslint-disable-next-line radix
   someDate.setDate(someDate.getDate() + parseInt(route.params.day));
-  let formatDate = moment(someDate.toISOString()).format('YYYY-MM-DD');
+  let formatDate = someDate.toISOString().slice(0, 10);
 
   const formatPrice = value => {
     const price = new Intl.NumberFormat('id-ID', {

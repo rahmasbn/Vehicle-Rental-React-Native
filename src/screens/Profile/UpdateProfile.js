@@ -6,41 +6,53 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
+  ScrollView,
   KeyboardAvoidingView,
+  PermissionsAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import {Radio, Stack, NativeBaseProvider} from 'native-base';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+import Toast from 'react-native-toast-message';
 
 import avatar from '../../assets/images/avatar.jpg';
 import styles from '../../styles/profile';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {getProfile} from '../../utils/users';
-import {ScrollView} from 'react-native-gesture-handler';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import {Radio, Stack, NativeBaseProvider} from 'native-base';
+import {updateUserPhoto} from '../../redux/actions/auth';
 
 const UpdateProfile = () => {
   const [userData, setUserData] = useState([]);
   const [profilePic, setProfilePic] = useState(avatar);
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [chosenDate, setChosenDate] = useState(false);
-  const [selectedGender, setSelectedGender] = useState('');
+  const [chosenDate, setChosenDate] = useState('');
+  const [selectedGender, setSelectedGender] = useState(0);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [photo, setPhoto] = useState('');
   const user = useSelector(state => state.auth.userData);
+  const dispatch = useDispatch();
 
   const getUser = () => {
     const token = user.token;
-    const image = user.photo;
+    // const image = user.photo;
 
     getProfile(token)
       .then(res => {
-        if (image !== null) {
+        const image = res.data.result[0].image;
+        if (image !== null && typeof image !== 'undefined') {
           setProfilePic({uri: process.env.HOST + `/${image}`});
         }
-        const moment = require('moment');
-        let dob = moment(res.data.result[0].dob).format('YYYY-MM-DD');
+        let dob = new Date(res.data.result[0].dob).toISOString().slice(0, 10);
         const result = {...res.data.result[0], dob};
         setUserData(result);
         setSelectedGender(res.data.result[0].gender_id);
+        setChosenDate(dob);
         setIsLoading(true);
       })
       .catch(err => {
@@ -49,16 +61,131 @@ const UpdateProfile = () => {
   };
 
   const handlePicker = date => {
-    const moment = require('moment');
     // eslint-disable-next-line no-sequences
-    setVisible(false), setChosenDate(moment(date).format('YYYY-MM-DD'));
+    setVisible(false), setChosenDate(new Date(date).toISOString().slice(0, 10));
   };
+
+  const openGallery = () => {
+    launchImageLibrary({includeBase64: true}, res => {
+      // console.log(res.assets[0].uri);
+      if (res.assets[0]) {
+        setProfilePic({uri: res.assets[0].uri});
+        setPhoto(res.assets[0]);
+      }
+    });
+  };
+
+  const openCamera = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'App Camera Permission',
+          message: 'App needs access to your camera ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // console.log('Camera permission given');
+        const option = {
+          mediaType: 'photo',
+          quality: 1,
+        };
+
+        launchCamera(option, res => {
+          if (res.didCancel) {
+            console.log('user cancelled image picker');
+          } else if (res.errorCode) {
+            console.log(res.errorMessage);
+          } else {
+            setProfilePic({uri: res.assets[0].uri});
+            setPhoto(res.assets[0]);
+          }
+        });
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const editProfile = () => {
+    let body = [];
+    // console.log('photo', typeof photo.uri);
+    if (typeof photo.uri === 'undefined') {
+      body.push({
+        name: 'image',
+        data: userData.image,
+      });
+    } else {
+      body.push({
+        name: 'image',
+        type: photo.type,
+        filename: photo.fileName,
+        data: RNFetchBlob.wrap(photo.uri),
+      });
+    }
+    if (name === '') {
+      body.push({name: 'name', data: userData.name});
+    } else {
+      body.push({name: 'name', data: name});
+    }
+    if (email === '') {
+      body.push({name: 'email', data: userData.email});
+    } else {
+      body.push({name: 'email', data: email});
+    }
+    if (chosenDate !== null) {
+      body.push({name: 'dob', data: chosenDate});
+    }
+    if (selectedGender !== null) {
+      body.push({name: 'gender_id', data: JSON.stringify(selectedGender)});
+    }
+    if (address === '') {
+      body.push({name: 'address', data: userData.address});
+    } else {
+      body.push({name: 'address', data: address});
+    }
+    if (phone === '') {
+      body.push({name: 'phone_number', data: userData.phone_number});
+    } else {
+      body.push({name: 'phone_number', data: phone});
+    }
+    console.log('body', body);
+    RNFetchBlob.fetch(
+      'PATCH',
+      `${process.env.HOST}/users/profile`,
+      {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'x-access-token': user.token,
+      },
+      body,
+    )
+      .then(res => {
+        console.log('res edit', res.json().result);
+        console.log('size', photo.fileSize);
+        const image = res.json().result.result.image;
+        dispatch(updateUserPhoto(image));
+        getUser();
+        Toast.show({
+          type: 'success',
+          text1: 'Profile updated Successfully',
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(userData.dob);
   return (
     <NativeBaseProvider>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -76,13 +203,15 @@ const UpdateProfile = () => {
               </View>
               <View style={styles.btnWrapper}>
                 <TouchableOpacity
-                  style={{...styles.btnPicture, backgroundColor: '#393939'}}>
+                  style={{...styles.btnPicture, backgroundColor: '#393939'}}
+                  onPress={openCamera}>
                   <Text style={{...styles.inputImg, color: '#ffcd61'}}>
                     Take a picture
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{...styles.btnPicture, backgroundColor: '#ffcd61'}}>
+                  style={{...styles.btnPicture, backgroundColor: '#ffcd61'}}
+                  onPress={openGallery}>
                   <Text style={{...styles.inputImg, color: '#393939'}}>
                     Browse from gallery
                   </Text>
@@ -95,11 +224,12 @@ const UpdateProfile = () => {
                 <TextInput
                   style={styles.inputStyle}
                   defaultValue={userData.name}
+                  onChangeText={text => setName(text)}
                 />
               </KeyboardAvoidingView>
               <Radio.Group
                 //   style={{margin}}
-                name="exampleGroup"
+                name="radio"
                 defaultValue={() => selectedGender !== null && selectedGender}
                 onChange={value => setSelectedGender(value)}
                 accessibilityLabel="select gender">
@@ -122,6 +252,7 @@ const UpdateProfile = () => {
                 <TextInput
                   style={styles.inputStyle}
                   defaultValue={userData.email}
+                  onChangeText={text => setEmail(text)}
                 />
               </KeyboardAvoidingView>
               <Text>Phone Number :</Text>
@@ -129,6 +260,8 @@ const UpdateProfile = () => {
                 <TextInput
                   style={styles.inputStyle}
                   defaultValue={userData.phone_number}
+                  keyboardType="number-pad"
+                  onChangeText={text => setPhone(text)}
                 />
               </KeyboardAvoidingView>
               <Text>Date of Birth :</Text>
@@ -154,11 +287,12 @@ const UpdateProfile = () => {
                 <TextInput
                   style={styles.inputStyle}
                   defaultValue={userData.address}
+                  onChangeText={text => setAddress(text)}
                 />
               </KeyboardAvoidingView>
             </View>
 
-            <TouchableOpacity style={styles.btnSave}>
+            <TouchableOpacity style={styles.btnSave} onPress={editProfile}>
               <Text style={styles.save}>Save Change</Text>
             </TouchableOpacity>
           </>

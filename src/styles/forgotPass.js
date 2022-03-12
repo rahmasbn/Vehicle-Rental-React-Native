@@ -55,6 +55,27 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Nunito-Regular',
   },
+  error: {
+    fontSize: 15,
+    color: 'red',
+    marginBottom: 10,
+    marginHorizontal: '5%',
+  },
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 2,
+    borderColor: '#fff',
+    backgroundColor: '#fff',
+    opacity: 0.9,
+    textAlign: 'center',
+    color: '#000',
+  },
+  focusCell: {
+    borderColor: '#000',
+  },
 });
 
 export default styles;

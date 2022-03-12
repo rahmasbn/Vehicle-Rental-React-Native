@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -17,10 +17,12 @@ import Detail from './screens/VehicleDetail';
 import Category from './screens/VehicleType';
 import Popular from './screens/VehicleType/Popular';
 import UpdateProfile from './screens/Profile/UpdateProfile';
+import UpdatePassword from './screens/Profile/UpdatePassword';
 import FirstStep from './screens/Payment';
 import SecondStep from './screens/Payment/Second';
 import ThirdStep from './screens/Payment/Third';
 import DetailHistory from './screens/History/Detail';
+import AddVehicle from './screens/AddVehicle';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -154,6 +156,14 @@ const HeaderDetail = () => {
   );
 };
 
+// const AddHeader = () => {
+//   return (
+//     <TouchableOpacity>
+//       <Text style={{color: 'gray', fontSize: 15}}>Cancel</Text>
+//     </TouchableOpacity>
+//   );
+// };
+
 const Router = () => (
   <Stack.Navigator initialRouteName="Content">
     <Stack.Screen
@@ -209,6 +219,13 @@ const Router = () => (
       }}
     />
     <Stack.Screen
+      name="UpdatePass"
+      component={UpdatePassword}
+      options={{
+        title: 'Update Password',
+      }}
+    />
+    <Stack.Screen
       name="FirstStep"
       component={FirstStep}
       options={{
@@ -233,6 +250,17 @@ const Router = () => (
       name="DetailHistory"
       component={DetailHistory}
       options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="AddVehicle"
+      component={AddVehicle}
+      options={{
+        // title: 'Add new item',
+        // headerTransparent: true,
+        // headerRight: () => <AddHeader />,
+        // headerRightContainerStyle: {paddingRight: 15},
+        headerShown: false,
+      }}
     />
   </Stack.Navigator>
 );

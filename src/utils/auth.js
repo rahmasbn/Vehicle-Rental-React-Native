@@ -19,3 +19,18 @@ export const logout = token => {
     },
   });
 };
+
+export const forgotPass = body => {
+  const URL = process.env.HOST + '/auth/forgot-password';
+  return axios.post(URL, body);
+};
+
+export const checkOTP = body => {
+  const URL = process.env.HOST + '/auth/check-otp';
+  return axios.post(URL, body);
+};
+
+export const resetPass = body => {
+  const URL = process.env.HOST + '/auth/reset-password';
+  return axios.post(URL, body);
+};

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#fff',
     fontWeight: '800',
-    fontSize: 40,
+    fontSize: 42,
     marginTop: '30%',
     marginLeft: '5%',
   },
@@ -26,8 +26,9 @@ const styles = StyleSheet.create({
     marginTop: '40%',
     marginLeft: '5%',
     borderRadius: 6,
-    opacity: 0.7,
+    opacity: 0.8,
     paddingLeft: 15,
+    color: '#000',
   },
   password: {
     width: '90%',
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: '5%',
     borderRadius: 6,
-    opacity: 0.7,
+    opacity: 0.8,
     paddingLeft: 15,
   },
   text: {
@@ -64,6 +65,13 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginTop: 60,
+  },
+  error: {
+    fontSize: 15,
+    marginHorizontal: '5%',
+    color: 'red',
+    marginBottom: 10,
+    // fontWeight: '700',
   },
 });
 

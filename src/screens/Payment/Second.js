@@ -5,11 +5,11 @@ import React from 'react';
 import styles from '../../styles/payment';
 
 const SecondStep = ({navigation, route}) => {
+  // console.log('param', route.params);
   let someDate = new Date(route.params.date);
-  const moment = require('moment');
   // eslint-disable-next-line radix
   someDate.setDate(someDate.getDate() + parseInt(route.params.day));
-  let formatDate = moment(someDate.toISOString()).format('YYYY-MM-DD');
+  let formatDate = someDate.toISOString().slice(0, 10);
   //   console.log(formatDate);
 
   const formatPrice = value => {

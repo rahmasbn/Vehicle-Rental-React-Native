@@ -29,7 +29,7 @@ const VehicleDetail = ({navigation, route}) => {
   );
   const [show, setShow] = useState(false);
 
-  const token = useSelector(state => state.auth.userData.token);
+  const auth = useSelector(state => state.auth.userData);
 
   const formatPrice = value => {
     const price = new Intl.NumberFormat('id-ID', {
@@ -46,7 +46,7 @@ const VehicleDetail = ({navigation, route}) => {
 
     getDetailVehicle(id)
       .then(res => {
-        // console.log(res.data.result[0]);
+        // console.log('detail', res.data.result[0]);
         const image = JSON.parse(res.data.result[0].images);
         // console.log('url', image[0]);
         setImgVehicle(image);
@@ -71,8 +71,7 @@ const VehicleDetail = ({navigation, route}) => {
   };
 
   const handlePicker = date => {
-    const moment = require('moment');
-    setVisible(false), setChosenDate(moment(date).format('YYYY-MM-DD'));
+    setVisible(false), setChosenDate(new Date(date).toISOString().slice(0, 10));
   };
 
   const onReservation = () => {
@@ -85,6 +84,7 @@ const VehicleDetail = ({navigation, route}) => {
       date: chosenDate,
       totalPrice: counter * detailVehicle.price,
     };
+
     navigation.navigate('FirstStep', param);
   };
 
@@ -141,70 +141,96 @@ const VehicleDetail = ({navigation, route}) => {
                 />
                 <Text style={styles.city}>{detailVehicle.city}</Text>
               </View>
-              <View style={styles.wrapper}>
-                <View style={styles.left}>
-                  <Text style={styles.type}>Select {detailVehicle.type}</Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.counterWrapper,
-                    ...styles.right,
-                  }}>
-                  <TouchableOpacity
-                    style={styles.btnCounter}
-                    onPress={subCounter}>
-                    <Text style={styles.sub}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.counter}>{counter}</Text>
-                  <TouchableOpacity
-                    style={styles.btnCounter}
-                    onPress={addCounter}>
-                    <Text style={styles.add}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.wrapper}>
-                <View style={{...styles.left, marginVertical: 20}}>
-                  <TouchableOpacity
-                    style={styles.selectDate}
-                    onPress={() => setVisible(true)}>
-                    {chosenDate ? (
-                      <Text style={styles.date}>{chosenDate}</Text>
-                    ) : (
-                      <Text style={styles.date}>Select Date</Text>
-                    )}
-                  </TouchableOpacity>
-                  <DateTimePicker
-                    isVisible={visible}
-                    mode={'date'}
-                    onConfirm={handlePicker}
-                    onCancel={() => setVisible(false)}
-                  />
-                </View>
-                <View style={{...styles.selectWrapper, ...styles.right}}>
-                  <Picker
-                    style={styles.selectDay}
-                    selectedValue={day}
-                    onValueChange={val => setDay(val)}>
-                    <Picker.Item label="1 Day" value={'1'} />
-                    <Picker.Item label="2 Day" value={'2'} />
-                    <Picker.Item label="3 Day" value={'3'} />
-                    <Picker.Item label="4 Day" value={'4'} />
-                    <Picker.Item label="5 Day" value={'5'} />
-                    <Picker.Item label="6 Day" value={'6'} />
-                    <Picker.Item label="7 Day" value={'7'} />
-                  </Picker>
-                </View>
-              </View>
-              <View style={{marginTop: 20}}>
-                <TouchableOpacity
-                  style={styles.btnReservation}
-                  onPress={() => {
-                    token !== null ? onReservation() : setShow(true);
-                  }}>
-                  <Text style={styles.reservation}>Reservation</Text>
-                </TouchableOpacity>
-              </View>
+              {auth.role !== 2 && (
+                <>
+                  <View style={styles.wrapper}>
+                    <View style={styles.left}>
+                      <Text style={styles.type}>
+                        Select {detailVehicle.type}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        ...styles.counterWrapper,
+                        ...styles.right,
+                      }}>
+                      <TouchableOpacity
+                        style={styles.btnCounter}
+                        onPress={subCounter}>
+                        <Text style={styles.sub}>-</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.counter}>{counter}</Text>
+                      <TouchableOpacity
+                        style={styles.btnCounter}
+                        onPress={addCounter}>
+                        <Text style={styles.add}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={styles.wrapper}>
+                    <View style={{...styles.left, marginVertical: 20}}>
+                      <TouchableOpacity
+                        style={styles.selectDate}
+                        onPress={() => setVisible(true)}>
+                        {chosenDate ? (
+                          <Text style={styles.date}>{chosenDate}</Text>
+                        ) : (
+                          <Text style={styles.date}>Select Date</Text>
+                        )}
+                      </TouchableOpacity>
+                      <DateTimePicker
+                        isVisible={visible}
+                        mode={'date'}
+                        onConfirm={handlePicker}
+                        onCancel={() => setVisible(false)}
+                      />
+                    </View>
+                    <View style={{...styles.selectWrapper, ...styles.right}}>
+                      <Picker
+                        style={styles.selectDay}
+                        selectedValue={day}
+                        onValueChange={val => setDay(val)}>
+                        <Picker.Item label="1 Day" value={'1'} />
+                        <Picker.Item label="2 Day" value={'2'} />
+                        <Picker.Item label="3 Day" value={'3'} />
+                        <Picker.Item label="4 Day" value={'4'} />
+                        <Picker.Item label="5 Day" value={'5'} />
+                        <Picker.Item label="6 Day" value={'6'} />
+                        <Picker.Item label="7 Day" value={'7'} />
+                      </Picker>
+                    </View>
+                  </View>
+                  <View style={{marginTop: 20}}>
+                    <TouchableOpacity
+                      style={styles.btnReservation}
+                      onPress={() => {
+                        auth.token !== null ? onReservation() : setShow(true);
+                      }}>
+                      <Text style={styles.reservation}>Reservation</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+              {auth.role === 2 && auth.id === detailVehicle.user_id && (
+                <>
+                  <View style={{marginTop: 20}}>
+                    <TouchableOpacity style={styles.btnReservation}>
+                      <Text style={styles.reservation}>Update Item</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{marginTop: 20}}>
+                    <TouchableOpacity
+                      style={{
+                        ...styles.btnReservation,
+                        backgroundColor: '#393939',
+                      }}>
+                      <Text style={{...styles.reservation, color: '#ffcd61'}}>
+                        Delete Item
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
             </View>
           </>
         ) : (
@@ -220,7 +246,7 @@ const VehicleDetail = ({navigation, route}) => {
           _dark: {
             bg: 'coolGray.800',
           },
-          bg: 'warmGray.50',
+          bg: 'warmGray.800',
         }}>
         <Modal.Content maxWidth="350" maxH="212">
           <Modal.CloseButton />

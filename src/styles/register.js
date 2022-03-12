@@ -75,6 +75,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 60,
   },
+  error: {
+    fontSize: 15,
+    marginHorizontal: '5%',
+    color: 'red',
+    marginBottom: 10,
+    // fontWeight: '700',
+  },
 });
 
 export default styles;

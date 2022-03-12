@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import SplashScreen from 'react-native-splash-screen';
+import {useSelector} from 'react-redux';
 
 import {vehicleType} from '../../utils/vehicles';
 import styles from '../../styles/home';
@@ -18,6 +20,7 @@ const Home = ({navigation}) => {
   const [motorbikes, setMotorbikes] = useState([]);
   const [bikes, setBikes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const auth = useSelector(state => state.auth.userData);
 
   const getVehicleType = () => {
     vehicleType()
@@ -37,12 +40,23 @@ const Home = ({navigation}) => {
     getVehicleType();
   }, []);
 
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Image
         source={require('../../assets/images/bg-home.jpg')}
         style={styles.banner}
       />
+      {auth.role === 2 && (
+        <TouchableOpacity
+          style={styles.btnAdd}
+          onPress={() => navigation.navigate('AddVehicle')}>
+          <Text style={styles.add}>Add new item</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.wrapper}>
         <Text style={styles.title}>Popular</Text>
         <Text

@@ -142,6 +142,13 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     color: 'black',
   },
+
+  // updatePass
+  error: {
+    fontSize: 15,
+    color: 'red',
+    marginBottom: 10,
+  },
 });
 
 export default styles;

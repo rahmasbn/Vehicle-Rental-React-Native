@@ -4,9 +4,8 @@ const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    width: width,
-    height: height,
     backgroundColor: '#fff',
+    minHeight: '100%',
   },
   //   detail
   header: {
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
 
   //   history
   loader: {
-    marginTop: '100%',
+    marginTop: '75%',
   },
   cardWrapper: {
     flexDirection: 'row',
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     color: '#393939',
-    marginVertical: '5%',
+    marginBottom: '10%',
   },
   name: {
     fontSize: 15,

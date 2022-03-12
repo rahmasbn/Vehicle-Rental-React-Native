@@ -8,19 +8,44 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Picker} from '@react-native-picker/picker';
 
 import styles from '../../styles/payment';
+import {getProfile} from '../../utils/users';
+import {useSelector} from 'react-redux';
+// import {useDispatch} from 'react-redux';
+// import {detailPayment} from '../../redux/actions/payment';
 
 const FirstStep = ({navigation, route}) => {
   const [idCard, setIdCard] = useState(0);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState(0);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [location, setLocation] = useState('');
   const [payment, setPayment] = useState('Prepayment (No Tax)');
+  const [userData, setUserData] = useState([]);
+  const user = useSelector(state => state.auth.userData);
+
+  // const dispatch = useDispatch();
+
+  const getUser = () => {
+    const token = user.token;
+
+    getProfile(token)
+      .then(res => {
+        setUserData(res.data.result[0]);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(phone);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -39,28 +64,27 @@ const FirstStep = ({navigation, route}) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="First name"
-          onChangeText={text => setFirstName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Last name"
-          onChangeText={text => setLastName(text)}
+          placeholder="Name"
+          defaultValue={userData.name}
+          onChangeText={text => setName(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Mobile phone (must be active)"
           keyboardType="number-pad"
           onChangeText={text => setPhone(text)}
+          defaultValue={userData.phone_number}
         />
         <TextInput
           style={styles.input}
           placeholder="Email address"
           onChangeText={text => setEmail(text)}
+          defaultValue={userData.email}
         />
         <TextInput
           style={styles.input}
           placeholder="Location (home, office, etc)"
+          defaultValue={userData.address}
           onChangeText={text => setLocation(text)}
         />
       </KeyboardAvoidingView>
@@ -90,13 +114,13 @@ const FirstStep = ({navigation, route}) => {
             const param = {
               ...route.params,
               idCard: idCard,
-              firstName: firstName,
-              lastName: lastName,
-              phone: phone,
-              email: email,
-              location: location,
+              name: name !== '' ? name : userData.name,
+              phone: phone !== '' ? phone : userData.phone_number,
+              email: email !== '' ? email : userData.email,
+              location: location !== '' ? location : userData.address,
               payment: payment,
             };
+            // dispatch(detailPayment(data));
             navigation.navigate('SecondStep', param);
           }}>
           <Text style={styles.order}>See Order Details</Text>
