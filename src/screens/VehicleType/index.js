@@ -86,6 +86,9 @@ const VehicleType = ({navigation, route}) => {
                     uri: `${process.env.HOST}/${JSON.parse(vehicle.images)[0]}`,
                   }}
                   style={styles.cardImg}
+                  onError={() =>
+                    require('../../assets/images/default-cars.jpeg')
+                  }
                 />
                 <View style={styles.wrapper}>
                   <Text style={styles.name}>{vehicle.name}</Text>

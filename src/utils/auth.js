@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const login = body => {
   const URL = process.env.HOST + '/auth/login';
-  // console.log('url', URL);
+  console.log('url', URL);
   return axios.post(URL, body);
 };
 

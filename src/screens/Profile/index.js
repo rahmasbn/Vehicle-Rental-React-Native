@@ -127,6 +127,7 @@ const Profile = ({navigation}) => {
                   <Image
                     source={require('../../assets/icons/arrow.png')}
                     style={styles.arrowIcon}
+                    onError={() => require('../../assets/icons/arrow.png')}
                   />
                 </TouchableOpacity>
               </>

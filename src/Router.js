@@ -23,6 +23,7 @@ import SecondStep from './screens/Payment/Second';
 import ThirdStep from './screens/Payment/Third';
 import DetailHistory from './screens/History/Detail';
 import AddVehicle from './screens/AddVehicle';
+import RoomChat from './screens/Chat/RoomChat';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -260,6 +261,13 @@ const Router = () => (
         // headerRight: () => <AddHeader />,
         // headerRightContainerStyle: {paddingRight: 15},
         headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="RoomChat"
+      component={RoomChat}
+      options={{
+        title: 'Vespa Rental Jogja',
       }}
     />
   </Stack.Navigator>

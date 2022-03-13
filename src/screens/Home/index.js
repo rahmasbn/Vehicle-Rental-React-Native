@@ -88,6 +88,9 @@ const Home = ({navigation}) => {
                     uri: `${process.env.HOST}/${JSON.parse(vehicle.images)[0]}`,
                   }}
                   style={styles.card}
+                  onError={() =>
+                    require('../../assets/images/default-cars.jpeg')
+                  }
                 />
               </TouchableOpacity>
             );

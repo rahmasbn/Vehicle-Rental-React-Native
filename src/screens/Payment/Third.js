@@ -6,6 +6,7 @@ import styles from '../../styles/payment';
 import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {createTransaction} from '../../utils/transaction';
+import {sendLocalNotification} from '../../utils/notification';
 
 const paymentCode = Math.ceil(Math.random() * 100000000);
 const bookingCode = Math.random()
@@ -28,6 +29,7 @@ const ThirdStep = ({navigation, route}) => {
       start_date: route.params.date,
       return_date: formatDate,
     };
+
     // console.log('body', body);
     createTransaction(body, token)
       .then(res => {
@@ -36,6 +38,10 @@ const ThirdStep = ({navigation, route}) => {
           transactionId: res.data.result.result.id,
         };
         console.log('third id', param);
+        sendLocalNotification({
+          title: 'Payment Successfully',
+          message: 'Thank you for renting at vehicle rental',
+        });
         navigation.navigate('DetailHistory', param);
       })
       .catch(err => {
@@ -69,6 +75,7 @@ const ThirdStep = ({navigation, route}) => {
         <Image
           source={require('../../assets/icons/step3.png')}
           style={{resizeMode: 'cover'}}
+          onError={() => require('../../assets/icons/step3.png')}
         />
       </View>
       <Text

@@ -75,7 +75,7 @@ const Register = ({navigation}) => {
           // );
           Toast.show({
             type: 'success',
-            text1: 'Registration Successful',
+            text1: 'Registration Successfully',
             visibilityTime: 5000,
           });
           navigation.navigate('Login');

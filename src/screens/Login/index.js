@@ -69,7 +69,7 @@ const Login = ({navigation}) => {
       // );
       Toast.show({
         type: 'success',
-        text1: 'Login Successful',
+        text1: 'Login Successfully',
         visibilityTime: 5000,
       });
       navigation.navigate('Home');
