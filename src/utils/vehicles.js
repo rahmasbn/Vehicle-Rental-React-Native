@@ -36,6 +36,19 @@ export const getDetailVehicle = id => {
 };
 
 export const getAllVehicles = search => {
-  const URL = `${process.env.HOST}/vehicles?page=1&limit=4&name=${search}`;
+  if (!search) {
+    return {};
+  }
+  const URL = `${process.env.HOST}/vehicles?page=1&limit=8&keyword=${search}`;
+  console.log('url', URL);
   return axios.get(URL);
+};
+
+export const deleteVehicle = (id, token) => {
+  const URL = `${process.env.HOST}/vehicles/${id}`;
+  return axios.delete(URL, {
+    headers: {
+      'x-access-token': token,
+    },
+  });
 };

@@ -18,7 +18,7 @@ const VehicleType = ({navigation, route}) => {
   const [isNext, setIsNext] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false);
 
   const formatPrice = value => {
     const price = new Intl.NumberFormat('id-ID', {
@@ -38,7 +38,7 @@ const VehicleType = ({navigation, route}) => {
       .then(res => {
         // console.log('result', res.data.result.meta.next);
         // setVehicleData(res.data.result.data);
-        setIsSuccess(true);
+        // setIsSuccess(true);
         setVehicleData([...vehicleData, ...res.data.result.data]);
         setIsNext(true);
         setIsLoading(false);
@@ -67,7 +67,7 @@ const VehicleType = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {vehicleData.length > 0 && isSuccess ? (
+      {vehicleData.length > 0 && !isLoading ? (
         <FlatList
           data={vehicleData}
           showsVerticalScrollIndicator={false}

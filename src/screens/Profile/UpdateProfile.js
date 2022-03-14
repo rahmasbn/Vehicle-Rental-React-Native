@@ -168,13 +168,27 @@ const UpdateProfile = () => {
       .then(res => {
         console.log('res edit', res.json().result);
         console.log('size', photo.fileSize);
-        const image = res.json().result.result.image;
-        dispatch(updateUserPhoto(image));
         getUser();
-        Toast.show({
-          type: 'success',
-          text1: 'Profile updated Successfully',
-        });
+        if (
+          res.json().result.msg === 'Only .png, .jpg and .jpeg format allowed!'
+        ) {
+          Toast.show({
+            type: 'error',
+            text1: 'Only .png, .jpg and .jpeg format allowed!',
+          });
+        } else if (res.json().result.msg === 'File size exceeds the limit') {
+          Toast.show({
+            type: 'error',
+            text1: 'File size exceeds the limit',
+          });
+        } else {
+          const image = res.json().result.result.image;
+          dispatch(updateUserPhoto(image));
+          Toast.show({
+            type: 'success',
+            text1: 'Profile updated Successfully',
+          });
+        }
       })
       .catch(err => {
         console.log(err);

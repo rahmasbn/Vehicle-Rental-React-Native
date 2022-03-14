@@ -128,6 +128,63 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+
+  // edit
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginTop: 22,
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    // padding: 75,
+    width: '90%',
+    height: '33%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnWrapper: {
+    marginTop: '5%',
+    width: '80%',
+  },
+  btnPicker: {
+    backgroundColor: '#e5e5e5',
+    borderRadius: 8,
+    paddingVertical: 15,
+  },
+  textBtn: {
+    textAlign: 'center',
+    color: '#393939',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  selectCityWrapper: {
+    width: '75%',
+    height: 40,
+    backgroundColor: '#efefef',
+    borderColor: '#efefef',
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  selectStatus: {
+    height: 50,
+    width: '90%',
+    backgroundColor: '#efefef',
+    borderColor: '#efefef',
+    borderRadius: 10,
+    borderWidth: 1,
+    alignSelf: 'center',
+    marginVertical: '5%',
+  },
 });
 
 export default styles;
