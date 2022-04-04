@@ -124,6 +124,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // marginTop: 22,
+    // backgroundColor: '#000',
+    // opacity: 0.4,
   },
   modalView: {
     backgroundColor: 'white',

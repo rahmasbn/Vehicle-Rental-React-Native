@@ -95,6 +95,7 @@ const Register = ({navigation}) => {
     }
   }, [error, isSubmit]);
 
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground
@@ -103,7 +104,7 @@ const Register = ({navigation}) => {
         <Text style={styles.title}>LET'S HAVE SOME RIDE</Text>
         <KeyboardAvoidingView>
           <TextInput
-            style={styles.name}
+            style={Object.keys(error).length > 0 ? {...styles.name, marginTop: '30%'} : styles.name}
             placeholder="Name"
             onChangeText={text => setName(text)}
           />

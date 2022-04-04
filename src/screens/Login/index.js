@@ -1,7 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
-  View,
+  // View,
+  ScrollView,
   Text,
   TextInput,
   KeyboardAvoidingView,
@@ -62,11 +63,6 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     if (auth.isFulfilled === true) {
-      // ToastAndroid.showWithGravity(
-      //   'Login Successful',
-      //   ToastAndroid.LONG,
-      //   ToastAndroid.TOP,
-      // );
       Toast.show({
         type: 'success',
         text1: 'Login Successfully',
@@ -82,7 +78,7 @@ const Login = ({navigation}) => {
   }, [auth, navigation]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground
         source={require('../../assets/images/bg-login.jpg')}
         style={styles.background}>
@@ -135,7 +131,7 @@ const Login = ({navigation}) => {
           </Text>
         </Text>
       </ImageBackground>
-    </View>
+    </ScrollView>
   );
 };
 

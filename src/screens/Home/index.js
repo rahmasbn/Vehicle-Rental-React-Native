@@ -20,6 +20,7 @@ const Home = ({navigation}) => {
   const [motorbikes, setMotorbikes] = useState([]);
   const [bikes, setBikes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const auth = useSelector(state => state.auth.userData);
 
   const getVehicleType = () => {
@@ -74,6 +75,7 @@ const Home = ({navigation}) => {
         <FlatList
           data={popular}
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           renderItem={({item: vehicle}) => {
             return (
               <TouchableOpacity
@@ -141,6 +143,7 @@ const Home = ({navigation}) => {
         <FlatList
           data={cars}
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           renderItem={({item: vehicle}) => {
             return (
               <TouchableOpacity
@@ -184,6 +187,7 @@ const Home = ({navigation}) => {
         <FlatList
           data={motorbikes}
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           renderItem={({item: vehicle}) => {
             return (
               <TouchableOpacity
@@ -228,6 +232,7 @@ const Home = ({navigation}) => {
         <FlatList
           data={bikes}
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           renderItem={({item: vehicle}) => {
             return (
               <TouchableOpacity

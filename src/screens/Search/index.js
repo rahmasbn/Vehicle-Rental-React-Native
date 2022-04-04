@@ -3,13 +3,13 @@ import {
   View,
   Text,
   TextInput,
-  ActivityIndicator,
-  Button,
-  FlatList,
+  // ActivityIndicator,
+  // Button,
+  // FlatList,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 // import {debounce} from 'lodash';
 
 import styles from '../../styles/search';
@@ -26,8 +26,8 @@ const formatPrice = value => {
   return price;
 };
 
-let timeOutId;
 const debounce = (func, delay) => {
+  let timeOutId;
   return (...args) => {
     if (timeOutId) {
       clearTimeout(timeOutId);

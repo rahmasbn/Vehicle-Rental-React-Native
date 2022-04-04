@@ -71,7 +71,9 @@ const styles = StyleSheet.create({
     marginHorizontal: '5%',
     color: 'red',
     marginBottom: 10,
-    // fontWeight: '700',
+    fontWeight: '700',
+    backgroundColor: '#fff',
+    opacity: 0.7,
   },
 });
 
